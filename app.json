@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Todo App",
-    "slug": "TodoApp",
+    "slug": "todo",
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": [
@@ -26,6 +26,7 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": ""
+    "description": "todo app です。永続化はしていません。",
+    "githubUrl": "https://github.com/hajime-goshima/react-native-todo-app"
   }
 }

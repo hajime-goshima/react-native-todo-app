@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   View,
   Text,
@@ -11,11 +11,30 @@ import { AntDesign } from '@expo/vector-icons';
 
 export default function Todo() {
   const [text, setText] = useState('');
-  const [tasks, setTasks] = useState(['お出かけ', '勉強', '明日の準備']);
+  const [tasks, setTasks] = useState([
+    { id: 1, title: 'やること１', completed: false },
+    { id: 2, title: 'やること２', completed: true },
+    { id: 3, title: 'やること３', completed: false }
+  ]);
+
+  useEffect(() => {
+    console.log(tasks);
+  });
 
   const onSubmitEditingHandler = e => {
-    setTasks(tasks.concat([e.nativeEvent.text]));
-    setText('');
+    if (e.nativeEvent.text && e.nativeEvent.text.trim()) {
+      const newId =
+        tasks.reduce((accumulator, currentValue) => {
+          return currentValue.id > accumulator ? currentValue.id : accumulator;
+        }, 0) + 1; // +1
+      const newTask = {
+        id: newId,
+        title: e.nativeEvent.text.trim(),
+        completed: false
+      };
+      setTasks(tasks.concat([newTask]));
+      setText('');
+    }
   };
 
   const changeTextHandler = text => {
@@ -36,7 +55,7 @@ export default function Todo() {
         style={[styles.renderItem, index === 0 ? styles.renderItemZero : {}]}
       >
         <View style={styles.renderItemInner}>
-          <Text style={styles.renderItemText}>{item}</Text>
+          <Text style={styles.renderItemText}>{item.title}</Text>
           <TouchableOpacity
             onPress={() => pressDissmissHandler(index)}
             style={styles.renderItemButton}
@@ -72,7 +91,9 @@ export default function Todo() {
         data={tasks}
         ItemSeparatorComponent={itemSeparator}
         renderItem={renderItem}
-        keyExtractor={item => item}
+        keyExtractor={item => {
+          return item.id.toString();
+        }}
         style={styles.flatList}
       />
     </View>
